@@ -1,0 +1,792 @@
+finpilot-backend/
+
+src/
+ ├── config/
+ │    ├── db.ts
+ │    └── env.ts
+ │
+ ├── models/
+ │    ├── User.ts
+ │    ├── Transaction.ts
+ │    ├── Budget.ts
+ │    └── Chat.ts
+ │
+ ├── controllers/
+ │    ├── auth.controller.ts
+ │    ├── transaction.controller.ts
+ │    ├── budget.controller.ts
+ │    └── ai.controller.ts
+ │
+ ├── routes/
+ │    ├── auth.routes.ts
+ │    ├── transaction.routes.ts
+ │    ├── budget.routes.ts
+ │    └── ai.routes.ts
+ │
+ ├── middleware/
+ │    ├── auth.middleware.ts
+ │    └── error.middleware.ts
+ │
+ ├── services/
+ │    └── ai.service.ts
+ │
+ └── app.ts
+
+
+
+ User
+
+{
+ name,
+ email,
+ password,
+ currency,
+ theme,
+ createdAt
+}
+
+
+Transaction
+
+{
+ userId,
+ type: "income" | "expense",
+ amount,
+ category,
+ date,
+ note,
+ currency,
+ createdAt
+}
+
+
+Budget
+
+{
+ userId,
+ category,
+ limit,
+ month,
+ year
+}
+
+
+Chat
+
+{
+ userId,
+ messages:[
+   {
+    role:"user",
+    content:"How much did I spend?"
+   },
+   {
+    role:"assistant",
+    content:"You spent..."
+   }
+ ]
+}
+
+
+
+
+FinPilot AI MVP Build Plan (2 Weeks)
+Phase 1 — Backend First (Days 1-5)
+
+Because the frontend depends on real data, we build the foundation first.
+
+Day 1 — Backend Setup + Database Design
+
+Goal:
+Create the Express TypeScript backend.
+
+Structure:
+
+finpilot-backend/
+
+src/
+ ├── config/
+ │    ├── db.ts
+ │    └── env.ts
+ │
+ ├── models/
+ │    ├── User.ts
+ │    ├── Transaction.ts
+ │    ├── Budget.ts
+ │    └── Chat.ts
+ │
+ ├── controllers/
+ │    ├── auth.controller.ts
+ │    ├── transaction.controller.ts
+ │    ├── budget.controller.ts
+ │    └── ai.controller.ts
+ │
+ ├── routes/
+ │    ├── auth.routes.ts
+ │    ├── transaction.routes.ts
+ │    ├── budget.routes.ts
+ │    └── ai.routes.ts
+ │
+ ├── middleware/
+ │    ├── auth.middleware.ts
+ │    └── error.middleware.ts
+ │
+ ├── services/
+ │    └── ai.service.ts
+ │
+ └── app.ts
+Database Design
+User Collection
+
+Why?
+
+Everything belongs to a user.
+
+User
+
+{
+ name,
+ email,
+ password,
+ currency,
+ theme,
+ createdAt
+}
+
+Example:
+
+Chris
+email: chris@gmail.com
+currency: NGN
+theme: dark
+Transaction Collection
+
+This is the heart of the app.
+
+From the PRD:
+
+Transactions need:
+
+type
+amount
+category
+date
+note
+currency
+
+Schema:
+
+Transaction
+
+{
+ userId,
+ type: "income" | "expense",
+ amount,
+ category,
+ date,
+ note,
+ currency,
+ createdAt
+}
+
+Relationship:
+
+User
+
+ |
+ |
+Many Transactions
+
+
+User 1 -------- * Transactions
+
+Example:
+
+User:
+
+Chris
+
+Transactions:
+
+Salary
+Food
+Transport
+Laptop
+Internet
+Budget Collection
+
+From PRD:
+
+Users create monthly budgets per category.
+
+Budget
+
+{
+ userId,
+ category,
+ limit,
+ month,
+ year
+}
+
+Example:
+
+Food
+limit: ₦50,000
+month: July
+AI Chat Collection
+
+For saving conversations.
+
+PRD requires chat history persistence.
+
+Chat
+
+{
+ userId,
+ messages:[
+   {
+    role:"user",
+    content:"How much did I spend?"
+   },
+   {
+    role:"assistant",
+    content:"You spent..."
+   }
+ ]
+}
+Day 2
+
+Authentication
+
+Build:
+
+POST /auth/register
+
+POST /auth/login
+
+GET /auth/me
+
+Learn:
+
+JWT
+bcrypt
+middleware
+protected routes
+Day 3-4
+
+Transaction API
+
+Endpoints:
+
+POST
+/api/transactions
+
+
+GET
+/api/transactions
+
+
+GET
+/api/transactions/:id
+
+
+PATCH
+/api/transactions/:id
+
+
+DELETE
+/api/transactions/:id
+
+Test everything in Postman.
+
+Day 5
+
+Dashboard API
+
+Create:
+
+GET /dashboard
+
+Response:
+
+{
+balance:500000,
+income:700000,
+expenses:200000,
+savings:500000,
+
+recentTransactions:[]
+}
+
+This powers the dashboard cards.
+
+The PRD requires balance, income, expenses, savings and recent transactions.
+
+Phase 2 Frontend (Days 6-11)
+Day 6
+
+Setup:
+
+React
+TypeScript
+Tailwind
+React Router
+Axios
+Recharts
+
+Create:
+
+src
+
+components/
+pages/
+hooks/
+services/
+context/
+types/
+Day 7
+
+Authentication UI
+
+Pages:
+
+Login
+Register
+Protected Routes
+
+Connect JWT.
+
+Day 8-9
+
+Dashboard
+
+Build:
+
+Cards:
+
+Balance
+Income
+Expenses
+Savings
+
+Charts:
+
+Income vs Expense
+Category spending
+
+The PRD dashboard layout already defines these.
+
+Day 10
+
+Transactions UI
+
+Features:
+
+Add transaction
+Edit
+Delete
+Search
+Filter
+Day 11
+
+Budget page
+
+Create:
+
+Budget cards
+
+Food
+Transport
+Entertainment
+
+Progress bars.
+
+Phase 3 AI Integration (Days 12-14)
+
+Do NOT just connect ChatGPT directly.
+
+The important part is:
+
+User asks:
+
+Why did I spend more this month?
+
+Backend:
+
+Receive question
+Get user's transactions
+Calculate:
+January food:
+50k
+
+
+February food:
+90k
+
+Increase:
+80%
+Send summary to OpenAI
+
+AI explains it.
+
+The PRD specifically says the AI must use actual user data and must not invent numbers.
+
+What I would NOT build now
+
+Leave these for later:
+
+❌ Forgot password
+❌ Email verification
+❌ Streaming AI responses
+❌ Bank connection
+❌ Notifications
+❌ Export PDF
+❌ Multi-user accounts
+
+They are in the PRD but not needed for the first portfolio version.
+
+My recommendation
+
+Start backend tomorrow.
+
+Order:
+
+Create repo
+FinPilot-AI
+
+inside:
+
+frontend
+backend
+Setup backend TypeScript Express
+Create MongoDB models
+Build Auth
+Build Transaction CRUD
+
+Then frontend.
+
+This project is perfect for mastering:
+
+useEffect
+useContext
+custom hooks
+React Router
+forms
+API state
+loading/error states
+TypeScript types
+
+because almost every feature depends on managing data from the backend.
+
+This is the kind of project that will move you from "I know React" to "I can build products."
+
+Perfect. I actually like this PRD enough that we won't need to redesign the product anymore. It is detailed enough to serve as our blueprint.
+
+There are just three things I would add before we start coding:
+
+1. Database Schema (Very Important)
+
+The PRD explains what the app should do, but not exactly how our MongoDB collections relate.
+
+We'll create this ourselves before writing any code.
+
+Users
+│
+├── Transactions
+│      ├── Income
+│      └── Expense
+│
+├── Budgets
+│
+├── AI Chats
+│
+└── Categories
+
+We'll design every schema first.
+
+2. API Contract
+
+Before coding the backend we'll decide every endpoint.
+
+Example
+
+POST   /api/auth/register
+
+POST   /api/auth/login
+
+GET    /api/dashboard
+
+GET    /api/transactions
+
+POST   /api/transactions
+
+PATCH  /api/transactions/:id
+
+DELETE /api/transactions/:id
+
+GET    /api/budgets
+
+POST   /api/budgets
+
+POST   /api/assistant/chat
+
+Then we know exactly what the frontend will consume.
+
+3. Folder Architecture
+
+This is the biggest improvement over your Todo project.
+
+Everything should already have a home before we write code.
+
+FinPilot-AI
+
+frontend/
+backend/
+
+docs/
+    PRD.md
+    API.md
+    DATABASE.md
+Then we follow your development workflow exactly
+
+This is now our permanent workflow for every serious project:
+
+1. Plan
+      ↓
+2. Design
+      ↓
+3. Backend
+      ↓
+4. Frontend
+      ↓
+5. Connect
+      ↓
+6. Refactor
+
+We won't jump ahead. If we're building the backend, we stay focused on the backend until it's solid.
+
+Backend structure
+backend/
+
+src/
+
+config/
+database/
+
+controllers/
+
+routes/
+
+models/
+
+middleware/
+
+services/
+
+utils/
+
+types/
+
+interfaces/
+
+validators/
+
+constants/
+
+app.ts
+server.ts
+Why this structure?
+config/ → environment variables, CORS, JWT config.
+database/ → MongoDB connection.
+controllers/ → contain business logic.
+routes/ → define API endpoints only.
+models/ → Mongoose schemas.
+middleware/ → authentication, error handling.
+services/ → AI service and reusable business logic.
+utils/ → helper functions (date formatting, currency formatting, etc.).
+validators/ → request validation.
+types/interfaces/ → shared TypeScript types.
+constants/ → category lists, supported currencies, roles, etc.
+
+This separation keeps the project scalable as it grows.
+
+Our MongoDB collections
+
+We'll likely have these collections:
+
+users
+
+transactions
+
+budgets
+
+categories
+
+chatHistories
+
+refreshTokens
+users
+
+Stores:
+
+profile
+email
+password
+preferred currency
+theme
+transactions
+
+Stores:
+
+income
+expenses
+amount
+category
+date
+note
+
+Every transaction belongs to one user.
+
+User
+
+↓
+
+Transactions
+
+Salary
+
+Food
+
+Fuel
+
+Netflix
+
+Transport
+budgets
+
+Stores monthly budgets.
+
+Example
+
+Food
+
+₦50,000
+
+July 2026
+categories
+
+Default ones
+
+Food
+
+Transport
+
+Health
+
+Shopping
+
+Entertainment
+
+plus
+
+Custom category
+
+created by the user.
+
+chatHistories
+
+Stores conversations.
+
+User
+
+↓
+
+Chat
+
+User:
+Where did my money go?
+
+AI:
+Most of your spending was on Food...
+refreshTokens
+
+For secure login.
+
+Instead of forcing users to log in every few minutes, we store refresh tokens separately.
+
+The AI architecture (the exciting part)
+
+This is where the app becomes different from every CRUD project.
+
+The AI never talks directly to MongoDB.
+
+Instead:
+
+User
+
+↓
+
+Frontend
+
+↓
+
+Backend
+
+↓
+
+MongoDB
+      │
+      │
+      ├── Transactions
+      ├── Budgets
+      └── Categories
+
+↓
+
+Backend summarizes data
+
+↓
+
+OpenAI
+
+↓
+
+AI Response
+
+↓
+
+Frontend
+
+Example:
+
+The user asks:
+
+Can I afford a new laptop?
+
+The backend will:
+
+Fetch their transactions.
+Calculate current balance.
+Calculate monthly income.
+Calculate monthly expenses.
+Calculate savings.
+Build a context object.
+Send only that context plus the user's question to the AI.
+Return the AI's answer.
+
+That approach matches the PRD's requirement that the AI answer only using the user's financial data and stay within the app's scope.
+
+Next session
+
+We'll begin Phase 3 (Backend) by designing the database schemas before writing any endpoints.
+
+The order will be:
+
+User model
+Transaction model
+Budget model
+Category model
+ChatHistory model
+
+Once those are solid, we'll build the authentication system and then the Transaction CRUD APIs. That foundation will make the frontend much easier to connect later.
