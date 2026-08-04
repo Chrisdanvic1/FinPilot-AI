@@ -4,12 +4,19 @@ import errorMiddleware from "./middleware/error.middleware.js";
 import cookieParser from "cookie-parser";
 import userRouter from "./routes/user.routes.js";
 import arcjetMiddleware from "./middleware/arcjet.middleware.js";
+import cors from "cors";
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(arcjetMiddleware);
+app.use(
+  cors({
+    origin: ["http://localhost:5173", "https://todo-api-full.vercel.app"],
+    credentials: true,
+  }),
+);
 app.get("/", (req, res) => {
   res.send("FinPilot AI");
 });

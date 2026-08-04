@@ -1,16 +1,20 @@
-import "./App.css";
-import FormCard from "./components/form";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-function App() {
+import "./index.css";
+import "./App.css";
+import LoginPage from "./pages/LoginPage";
+import CreatePage from "./pages/CreatePage";
+import HomePage from "./pages/HomePage";
+
+export default function App() {
   return (
-    <>
-      <FormCard
-        header={"FinPilot AI"}
-        subheader={"Precision finance for high-growth teams"}
-        title="Log in"
-      />
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<LoginPage />} />
+        <Route path="/sign-up" element={<CreatePage />} />
+        <Route path="/home" element={<HomePage />} />
+        {/* <Route path="*" element={<NotFound />} /> */}
+      </Routes>
+    </BrowserRouter>
   );
 }
-
-export default App;

@@ -15,9 +15,10 @@ export const signUp = async (req, res, next) => {
     const existingUser = await User.findOne({ email });
 
     if (existingUser) {
-      const error = new Error("User already exists");
-      error.statusCode = 409;
-      throw error;
+      return res.status(409).json({
+        success: false,
+        message: "Email already exists",
+      });
     }
 
     const salt = await bcrypt.genSalt(10);
