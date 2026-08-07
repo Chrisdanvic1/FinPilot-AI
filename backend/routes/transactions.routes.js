@@ -3,15 +3,15 @@ import {
   createTransaction,
   deleteTransaction,
   editTransaction,
-  getAllTransaction,
-  getTransaction,
+  getAllUserTransactions,
+  getUserTransaction,
 } from "../controllers/transactions.controller.js";
 import authorize from "../middleware/auth.middleware.js";
 
 const transactionRouter = Router();
 
-transactionRouter.get("/", authorize, getAllTransaction);
-transactionRouter.get("/:id", authorize, getTransaction);
+transactionRouter.get("/", authorize, getAllUserTransactions);
+transactionRouter.get("/:id", authorize, getUserTransaction);
 transactionRouter.post("/", authorize, createTransaction);
 transactionRouter.patch("/:id", authorize, editTransaction);
 transactionRouter.delete("/:id", authorize, deleteTransaction);

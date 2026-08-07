@@ -3,7 +3,7 @@ import { expenseCategories, incomeCategories } from "../constant/constant.js";
 import Transaction from "../models/transactions.model.js";
 import { validateTransaction } from "../validators/validator.js";
 
-export const getAllTransaction = async (req, res) => {
+export const getAllUserTransactions = async (req, res) => {
   try {
     const transaction = await Transaction.find({ user: req.user._id });
 
@@ -19,7 +19,7 @@ export const getAllTransaction = async (req, res) => {
   }
 };
 
-export const getTransaction = async (req, res) => {
+export const getUserTransaction = async (req, res) => {
   try {
     const transactionId = req.params.id;
 
