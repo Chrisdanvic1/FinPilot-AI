@@ -1,3 +1,5 @@
+import { expenseCategories, incomeCategories } from "../constant/constant.js";
+
 export const validateTransaction = (title, amount, type, category) => {
   if (!title) {
     throw new Error("Title cannot be empty");
