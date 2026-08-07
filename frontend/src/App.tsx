@@ -4,7 +4,7 @@ import "./index.css";
 import "./App.css";
 import LoginPage from "./pages/LoginPage";
 import CreatePage from "./pages/CreatePage";
-import HomePage from "./pages/HomePage";
+import HomePage from "./pages/DashboardPage";
 
 export default function App() {
   return (

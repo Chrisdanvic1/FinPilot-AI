@@ -109,8 +109,25 @@ const FormCard = ({
       const signInData = { email, password };
       const response = await api.post("/auth/sign-in", signInData);
 
+      const token = response.data.data.token;
+      console.log("Token gotten", token);
+
       console.log(response);
-      console.log("Sign In Success:", response.data);
+      console.log(
+        "Sign In Success:",
+        response.data,
+        "User id",
+        response.data.data.user._id,
+      );
+
+      if (token) {
+        localStorage.setItem("token", token);
+
+        localStorage.setItem("userId", response.data.data.user._id);
+
+        console.log("Login successful! Token saved.");
+      }
+
       handleSuccess("Welcome Back!");
       navigateTo("/home");
     } catch (error) {

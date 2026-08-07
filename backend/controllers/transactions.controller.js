@@ -19,6 +19,16 @@ export const getAllTransaction = async (req, res) => {
   }
 };
 
+export const getTransaction = async (req, res) => {
+  try {
+    const userId = req.params.id;
+  } catch (err) {
+    const err = new Error(error);
+    err.statusCode = 400;
+    throw err;
+  }
+};
+
 export const createTransaction = async (req, res) => {
   try {
     const {
